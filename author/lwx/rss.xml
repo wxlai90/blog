@@ -1,0 +1,274 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<channel>
+   
+      <title>jekyller.github.io/jasper/</title>
+   
+   <link>http://0.0.0.0:4000</link>
+   <description>Mostly a series of why like thats</description>
+   <language>en-uk</language>
+   <managingEditor> </managingEditor>
+   <atom:link href="rss" rel="self" type="application/rss+xml" />
+   
+	<item>
+	  <title>Eyesight and Oversight</title>
+	  <link>/blog//lenskart</link>
+	  <author></author>
+	  <pubDate>2022-02-01T00:00:01+00:00</pubDate>
+	  <guid>/blog//lenskart</guid>
+	  <description><![CDATA[
+	     <h2 id="lenskart">Lenskart</h2>
+
+<p>So I have been wanting to get a pair of blue light (filtering) glasses for quite some time now. My eyes feel tired and painful causing me headaches after looking at code too long. And my vision is definitely deteriorating as well.</p>
+
+<p>Some time ago, I had gone to Owndays with the intention of buying a pair but got turned away instead, the lady told me to just rest my eyes more. That was probably good advice but poor salesmanship. From my part-time sales job working at Challenger selling Seagate portable hard disks about 10+ years ago, I learnt to never turn away someone who is ready to spend money.</p>
+
+<p>Recently, I started looking at Lenskart and more importantly it seems like they “nudge” you towards signing up for their gold membership. Which functions like many other faux membership to lock you in and draw more sales. It is stated that you can share the membership with your friends and family, and the primary identifier is your mobile number. I went to a physical outlet and had a rather poor experience with them. As always with salesmen, they look at your appearance to judge your spending power and guage how much time they should invest in you, in my case, my mickey mouse t-shirt and shorts probably didn’t warrant much time if any at all.</p>
+
+<p>They didn’t attend to me at all and when I asked them questions, they give minimal effort answers.</p>
+
+<p>However, as always, it is better to interact with websites than people, where there is no prejudice.</p>
+
+<h3 id="lenskart-website">Lenskart Website</h3>
+
+<p>It was quite a pleasant site and I managed to find some frames that I liked, added to cart and reached the checkout page. Where I was asked to key in a gold membership number if I have one. I was still undecided about buying them because of the poor in-person experience. But something else drawn my attention, the checking of gold membership validity.</p>
+
+<h3 id="expired-gold-membership-and-bruteforcing">Expired gold membership and bruteforcing</h3>
+
+<p>Naturally, the first thing I did was to try my friend’s membership, which coincidentally had just expired to my dismay. However, I did notice that it was just a simply AJAX call to check the membership status with no rate-limiting or request token. Which meant it would be relatively trivial to brute-force a valid membership.</p>
+
+<p>I quickly whipped up something in node. And in less than a minute, I had a few hits.</p>
+
+<p><img src="https://drive.google.com/uc?id=1EqHDr8k661B9KB3x71CgrLgcT4F3hoMM&amp;export=view" style="max-width: 720px" />
+<span style="font-size: 12px">Brute-forcing</span></p>
+
+<p><img src="https://drive.google.com/uc?id=10EnJ_G6zvo9HZ7-BCmOUJFw9m4J8fO1Q&amp;export=view" style="max-width: 720px" />
+<span style="font-size: 12px">Found one</span></p>
+
+<p>I prefixed the first 4 digits with my actual phone number, since phone numbers usually have shared prefixes, which increases my chances of trying an actual phone number as compared to something like 98765432, which might seem valid but might not be an actual number. This reduces the range that I have to cover.</p>
+
+<h3 id="password-hash">Password hash</h3>
+
+<p>After finding a hit, I was curious as to what was returned, apparently whoever made this endpoint decided it was too much effort to filter out fields, and simply returned everything from the (Mongo) DB query .</p>
+
+<p><img src="https://drive.google.com/uc?id=1FjhKT0G5BBfMmKGqPEeCW8EbfK-IYm44&amp;export=view" style="max-width: 720px" />
+<span style="font-size: 12px">JSON Response</span></p>
+
+<p>One particularly interesting field was the passwordHash, which at first glance appeared to be 32 chars, which led me to believe it is just a md5 sum of the plaintext. At this point, it could have been salted but given how lax the response was, I figured it’s probably just hashed using the plaintext.</p>
+
+<h3 id="rainbow-tables">Rainbow tables</h3>
+
+<p>So to confirm my suspicions, I threw the md5 into a md5 rainbow table site.</p>
+
+<p><img src="https://drive.google.com/uc?id=1eeoeo19tsjk2-zHUSk-8VZOAQFyj1pcs&amp;export=view" style="max-width: 720px" />
+<span style="font-size: 12px">Password: 123456</span></p>
+
+<p>And lo and behold, it’s the md5 of a very commonly used password: <strong>123456</strong>.</p>
+
+<p>However, I am not sure what this password is for. It might be a password for the shop employees to use rather than the user’s password, since I don’t really see a password based login for users.</p>
+
+<h3 id="personal-photos">Personal photos</h3>
+
+<p>Also from some of the JSON responses, we can see a faceAnalysis prop. I believe it’s the result of lenskart’s virtual fitting of spectacles. Based on the result, we can also get a picture of the user, which probably is against PDPA. At this point, we can get their name, number and picture.</p>
+
+<h3 id="gold-membership">Gold membership</h3>
+
+<p>Just to be clear, you don’t actually need the password to use someone’s lenskart gold membership and there is no login with password field. Since <em>it’s meant to be shared</em>, all you need is the phone number of a valid gold member. There are even people on carousell selling their gold membership for <a href="https://www.carousell.sg/p/lenskart-1-for-1-gold-membership-1134013424/?t-id=5W_muYuMvj_1643802401331&amp;t-referrer_browse_type=search_results&amp;t-referrer_request_id=mk9gsj-lh2fk4May&amp;t-referrer_search_query=lenskart&amp;t-referrer_sort_by=popular&amp;t-tap_index=1">40 cents</a>.</p>
+
+<p>But for me it was never about the gold membership, I am more interested at what other things could be wrong about a relatively well-known shop.</p>
+
+<p>So I poked around abit more and found something really weird.</p>
+
+<h4 id="what-on-earth-is-cust_is_gold">What on earth is cust_is_gold</h4>
+
+<p>I noticed the only difference between a gold member and a non-gold, was an additional cookie.</p>
+
+<p><strong>cust_is_gold</strong></p>
+
+<p>Indeed, customer is always right and sometimes they are gold.</p>
+
+<p>The logging in actually does a simple call to verify the number and subsequently sets a new cookie named “cust_is_gold” with a value of 1. This is what gets you the gold membership discount.</p>
+
+<p>To verfiy my hypothesis, I cleared my cookies and cache, started a new cart and at the checkout page, injected my cookie.</p>
+
+<h4 id="before-cookie-injection">Before cookie injection</h4>
+
+<p><img src="https://drive.google.com/uc?id=1lZh8_jm1tJUzLyt3JINB1h2tSZdkeQIi&amp;export=view" style="max-width: 720px" />
+<span style="font-size: 12px">No discount, asked to log in</span></p>
+
+<h4 id="after-cookie-injection">After cookie injection</h4>
+
+<p><img src="https://drive.google.com/uc?id=1UlHQ6HoDlAjVjpV6WxK7Dy7buzDv7PZQ&amp;export=view" style="max-width: 720px" />
+<span style="font-size: 12px">Showing gold membership</span></p>
+
+<h4 id="added-another-pair-of-glasses-to-reflect-the-1-for-1">Added another pair of glasses to reflect the 1-for-1</h4>
+
+<p><img src="https://drive.google.com/uc?id=1552mkv_xNQEhKGXAkPQd4_cXvpLca_sn&amp;export=view" style="max-width: 720px" />
+<span style="font-size: 12px">1-for-1 discount</span></p>
+
+<p>I didn’t checkout, but it seems like that’s all you really need to get 1-for-1 gold membership from Lenskart through their online sales channel.</p>
+
+<h3 id="conclusion">Conclusion</h3>
+
+<p>Really interesting findings from Lenskart’s site, if anything I wasn’t that keen on buying from them but after having spent some time on their sites, I now feel like getting a pair of glasses from them.</p>
+
+	  ]]></description>
+	</item>
+
+	<item>
+	  <title>Airpods Pro Not For Me</title>
+	  <link>/blog//airpods-pro-not-for-me</link>
+	  <author></author>
+	  <pubDate>2021-11-28T00:00:00+00:00</pubDate>
+	  <guid>/blog//airpods-pro-not-for-me</guid>
+	  <description><![CDATA[
+	     <p><img src="https://raw.githubusercontent.com/wxlai90/blog/main/assets/images/uploaded/my_airpods_pro.jpg" style="max-width: 720px" />
+<span style="font-size: 12px">My AirPods Pro</span></p>
+
+<p>So I got my AirPods Pro back in Sept 2021. There was an online store sale by Courts, and I snapped them up for just $264.00. Which was kinda a steal.</p>
+
+<p>There were a few hiccups though.</p>
+
+<ol>
+  <li>
+    <p>The warranty coverage has started in July, 2 months earlier than my actual purchase date.</p>
+  </li>
+  <li>
+    <p>There was a blue hairline plastic thread embedded deep into the charging case.</p>
+  </li>
+</ol>
+
+<p>When I noticed the blue thread, I was worried that it could be a counterfeit. But Courts did have a good enough reputation. With the two issues I faced, I decided it was worth a trip down to the Apple Store in Orchard.</p>
+
+<p>When I was there, the staff told me there was nothing he can do for the warranty, and I had to call a separate hotline - which I did and got it sorted out on the same day.</p>
+
+<p>As for the blue thread, he brought it to the service engineer whom used a pair of tweezers to pull them out. Or so he claimed. I didn’t check thoroughly but on the following day, I actually saw the blue thread again. I believe what happened was the thread got lodged in the hinge and nobody noticed it. Knowing what they would do (tweezer it), I decided to just yank it out myself. I tugged hard on it and heard a snap sound. Pretty sure part of the thread is still lodged inside the bottom part of the case (but whatever).</p>
+
+<h2 id="i-dont-like-it">I don’t like it</h2>
+
+<p>Apart from the poor out-of-box experience.
+I realize the silicon tips hurt my ears. Unlike my 1st gen airpods, which I can listen to all day and still don’t feel any discomfort.</p>
+
+<p>The spatial audio is a gimmick that I don’t really like either.</p>
+
+<p>The only good feature is the ANC, but even then there are much better ANC earbuds.</p>
+
+<p>The case’s battery drains at a constant rate even when I don’t use them at all. Which is kinda weird.</p>
+
+<p>Overall, I don’t like the Airpods pro for their poor fit to my ears. And since Airpods 3rd Gen just launched, perhaps I will get a set for myself this Christmas.</p>
+
+<p><img src="https://store.storeimages.cdn-apple.com/8756/as-images.apple.com/is/MME73?wid=2000&amp;hei=2000&amp;fmt=jpeg&amp;qlt=95&amp;.v=1632861342000" alt="AirPods 3rd Gen" style="max-width: 720px" />
+<span style="font-size: 12px">AirPods 3rd Gen</span></p>
+
+<h2 id="no-introspective">No introspective</h2>
+
+<p>I decided to skip my weekly intro for this week since I am halfway through my re-service. And will simply do one intro for the entire ICT call-up period instead.</p>
+
+	  ]]></description>
+	</item>
+
+	<item>
+	  <title>Creating a new Github Profile Page</title>
+	  <link>/blog//creating-a-github-profile-page</link>
+	  <author></author>
+	  <pubDate>2021-10-19T13:12:00+00:00</pubDate>
+	  <guid>/blog//creating-a-github-profile-page</guid>
+	  <description><![CDATA[
+	     <h2 id="github-page">Github page</h2>
+
+<p>Github has a built in profile page which you can customize using markdown, and looks pretty good.</p>
+
+<p>But like many others, this starts to feel lacking. For every github user, there is a free github pages which can be published at <span>username.github.io<span>.</span></span></p>
+
+<p>For me, it’s at <a href="https://wxlai90.github.io/">wxlai90.github.io</a> - wxlai90 being my username.</p>
+
+<p>A popular use case for this free landing page is to turn it into a profile page.</p>
+
+<p>Previously, I hosted my SG Bus Arrivals app on this, which has now been <a href="https://wxlai90.github.io/bus">moved</a> to make space for a profile page.</p>
+
+<h2 id="to-spa-or-not-to-spa">To SPA or not to SPA</h2>
+
+<p>When deciding how best to build my new profile page, I decided upon a few rules to make things interesting.</p>
+
+<ol>
+  <li>No using of templates</li>
+  <li>No CSS libraries like bootstrap or material</li>
+  <li>Keep it simple and clean</li>
+</ol>
+
+<p>My main motivation behind setting those rules are to force myself to practise CSS.</p>
+
+<p>I decided to do it with plain HTML &amp; CSS. After all, we should use the tools that suit our use-case, and in this case HTML + CSS fits perfectly.</p>
+
+<p>The bulk of a profile page definitely lies in the styling, which is something I am very bad at. I cannot do art to save my life and CSS is very much an art.</p>
+
+<p>Nevertheless, I recognize the value of styling an app and have put in the effort to improve.</p>
+
+<p>Creating this profile page from scratch is like a small test to myself, to evaluate how much I have improved and what areas to work on more.</p>
+
+<h2 id="not-too-shabby">Not too shabby</h2>
+
+<p>You can check out the final result <a href="https://wxlai90.github.io/">here</a>.</p>
+
+<p>It was an impromptu decision to put my name next to my profile picture, and I tried to style it such that the initials of my name lines up but it looks kinda weird. I’ll leave improving in for a future iteration.</p>
+
+<p>Overall, I am still happy with how it turned out, considering how bad I used to be at css.</p>
+
+	  ]]></description>
+	</item>
+
+	<item>
+	  <title>Why like that</title>
+	  <link>/blog//hawkers-digitalization</link>
+	  <author></author>
+	  <pubDate>2021-05-29T13:12:00+00:00</pubDate>
+	  <guid>/blog//hawkers-digitalization</guid>
+	  <description><![CDATA[
+	     <p>I came across this article today while having my morning coffee about how a portion of hawkers in SG is being left behind in the digitalization race accelerated by Covid-19.</p>
+
+<h2 id="article">Article</h2>
+
+<p><a href="https://www.todayonline.com/singapore/big-read-floundering-digital-wave-older-hawkers-could-call-it-quits-taking-piece-spore">Today Online</a></p>
+
+<p>While I have always regarded a certain level of obsolescence as a necessary evil in the transition to a more digital society. I couldn’t help but wonder if this was more evil than necessary.</p>
+
+<p>I narrowed down the obstacles faced by the hawkers to 2 main factors:</p>
+
+<ol>
+  <li>
+    <p>They are not digitally savvy enough to register for food delivery platforms like grab food, food panda, etc. Which also it tough for them to start selling online.</p>
+  </li>
+  <li>
+    <p>The fees charged by the food delivery platforms are off-putting and makes it less worthwhile to even contemplate the idea.</p>
+  </li>
+</ol>
+
+<p>That’s when I realized, there might be something I can do to help.</p>
+
+<p>I have always had a similar idea for digitalizing hawkers and food centres. I had previously worked on my personal project of achieving such a platform, but stopped when I couldn’t find time.</p>
+
+<p>I am thinking, maybe it’s time to revive the idea and write a new platform.</p>
+
+<p>However, this would be different from the existing ones in a few ways:</p>
+
+<ol>
+  <li>There will be no fees.</li>
+  <li>Delivery service is provided by volunteers/ad-hoc workers.</li>
+  <li>Option to request for volunteers to help onboard is possible.</li>
+</ol>
+
+<p>Having no fees should not be a big problem unless it grows super fast and super big. Which would be a happy problem anyway.</p>
+
+<p>Delivery is a brokering concept, where people can offer their service whenever they want and an asking price. It is then up to the stall owners to accept it. If they don’t feel it’s worthwhile, they will have to reject the order or figure out some other delivery fallback service.</p>
+
+<p>An option to request for volunteers to help them onboard. There are way too many people who can easily navigate a website and register a stall. Especially younger people like teenagers, maybe I am too optimistic but I feel like all we need to do is let them know who needs help and people will help.</p>
+
+<p>And so, I start to code my new project “Hawkers SG”.</p>
+
+	  ]]></description>
+	</item>
+
+
+</channel>
+</rss>

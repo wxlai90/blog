@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<channel>
+   
+      <title>jekyller.github.io/jasper/</title>
+   
+   <link>http://0.0.0.0:4000</link>
+   <description>Mostly a series of why like thats</description>
+   <language>en-uk</language>
+   <managingEditor> </managingEditor>
+   <atom:link href="rss" rel="self" type="application/rss+xml" />
+   
+	<item>
+	  <title>Creating a new Github Profile Page</title>
+	  <link>/blog//creating-a-github-profile-page</link>
+	  <author></author>
+	  <pubDate>2021-10-19T13:12:00+00:00</pubDate>
+	  <guid>/blog//creating-a-github-profile-page</guid>
+	  <description><![CDATA[
+	     <h2 id="github-page">Github page</h2>
+
+<p>Github has a built in profile page which you can customize using markdown, and looks pretty good.</p>
+
+<p>But like many others, this starts to feel lacking. For every github user, there is a free github pages which can be published at <span>username.github.io<span>.</span></span></p>
+
+<p>For me, it’s at <a href="https://wxlai90.github.io/">wxlai90.github.io</a> - wxlai90 being my username.</p>
+
+<p>A popular use case for this free landing page is to turn it into a profile page.</p>
+
+<p>Previously, I hosted my SG Bus Arrivals app on this, which has now been <a href="https://wxlai90.github.io/bus">moved</a> to make space for a profile page.</p>
+
+<h2 id="to-spa-or-not-to-spa">To SPA or not to SPA</h2>
+
+<p>When deciding how best to build my new profile page, I decided upon a few rules to make things interesting.</p>
+
+<ol>
+  <li>No using of templates</li>
+  <li>No CSS libraries like bootstrap or material</li>
+  <li>Keep it simple and clean</li>
+</ol>
+
+<p>My main motivation behind setting those rules are to force myself to practise CSS.</p>
+
+<p>I decided to do it with plain HTML &amp; CSS. After all, we should use the tools that suit our use-case, and in this case HTML + CSS fits perfectly.</p>
+
+<p>The bulk of a profile page definitely lies in the styling, which is something I am very bad at. I cannot do art to save my life and CSS is very much an art.</p>
+
+<p>Nevertheless, I recognize the value of styling an app and have put in the effort to improve.</p>
+
+<p>Creating this profile page from scratch is like a small test to myself, to evaluate how much I have improved and what areas to work on more.</p>
+
+<h2 id="not-too-shabby">Not too shabby</h2>
+
+<p>You can check out the final result <a href="https://wxlai90.github.io/">here</a>.</p>
+
+<p>It was an impromptu decision to put my name next to my profile picture, and I tried to style it such that the initials of my name lines up but it looks kinda weird. I’ll leave improving in for a future iteration.</p>
+
+<p>Overall, I am still happy with how it turned out, considering how bad I used to be at css.</p>
+
+	  ]]></description>
+	</item>
+
+	<item>
+	  <title>Why like that</title>
+	  <link>/blog//hawkers-digitalization</link>
+	  <author></author>
+	  <pubDate>2021-05-29T13:12:00+00:00</pubDate>
+	  <guid>/blog//hawkers-digitalization</guid>
+	  <description><![CDATA[
+	     <p>I came across this article today while having my morning coffee about how a portion of hawkers in SG is being left behind in the digitalization race accelerated by Covid-19.</p>
+
+<h2 id="article">Article</h2>
+
+<p><a href="https://www.todayonline.com/singapore/big-read-floundering-digital-wave-older-hawkers-could-call-it-quits-taking-piece-spore">Today Online</a></p>
+
+<p>While I have always regarded a certain level of obsolescence as a necessary evil in the transition to a more digital society. I couldn’t help but wonder if this was more evil than necessary.</p>
+
+<p>I narrowed down the obstacles faced by the hawkers to 2 main factors:</p>
+
+<ol>
+  <li>
+    <p>They are not digitally savvy enough to register for food delivery platforms like grab food, food panda, etc. Which also it tough for them to start selling online.</p>
+  </li>
+  <li>
+    <p>The fees charged by the food delivery platforms are off-putting and makes it less worthwhile to even contemplate the idea.</p>
+  </li>
+</ol>
+
+<p>That’s when I realized, there might be something I can do to help.</p>
+
+<p>I have always had a similar idea for digitalizing hawkers and food centres. I had previously worked on my personal project of achieving such a platform, but stopped when I couldn’t find time.</p>
+
+<p>I am thinking, maybe it’s time to revive the idea and write a new platform.</p>
+
+<p>However, this would be different from the existing ones in a few ways:</p>
+
+<ol>
+  <li>There will be no fees.</li>
+  <li>Delivery service is provided by volunteers/ad-hoc workers.</li>
+  <li>Option to request for volunteers to help onboard is possible.</li>
+</ol>
+
+<p>Having no fees should not be a big problem unless it grows super fast and super big. Which would be a happy problem anyway.</p>
+
+<p>Delivery is a brokering concept, where people can offer their service whenever they want and an asking price. It is then up to the stall owners to accept it. If they don’t feel it’s worthwhile, they will have to reject the order or figure out some other delivery fallback service.</p>
+
+<p>An option to request for volunteers to help them onboard. There are way too many people who can easily navigate a website and register a stall. Especially younger people like teenagers, maybe I am too optimistic but I feel like all we need to do is let them know who needs help and people will help.</p>
+
+<p>And so, I start to code my new project “Hawkers SG”.</p>
+
+	  ]]></description>
+	</item>
+
+
+</channel>
+</rss>

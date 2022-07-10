@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Finding The Way Home - Articles</title>
+    <description>Mostly a series of why like thats</description>
+    <link>
+    http://0.0.0.0:4000</link>
+    
+      
+      <item>
+        <title>Eyesight and Oversight</title>
+        
+          <description>&lt;h2 id=&quot;lenskart&quot;&gt;Lenskart&lt;/h2&gt;
+
+&lt;p&gt;So I have been wanting to get a pair of blue light (filtering) glasses for quite some time now. My eyes feel tired and painful causing me headaches after looking at code too long. And my vision is definitely deteriorating as well.&lt;/p&gt;
+
+&lt;p&gt;Some time ago, I had gone to Owndays with the intention of buying a pair but got turned away instead, the lady told me to just rest my eyes more. That was probably good advice but poor salesmanship. From my part-time sales job working at Challenger selling Seagate portable hard disks about 10+ years ago, I learnt to never turn away someone who is ready to spend money.&lt;/p&gt;
+
+&lt;p&gt;Recently, I started looking at Lenskart and more importantly it seems like they “nudge” you towards signing up for their gold membership. Which functions like many other faux membership to lock you in and draw more sales. It is stated that you can share the membership with your friends and family, and the primary identifier is your mobile number. I went to a physical outlet and had a rather poor experience with them. As always with salesmen, they look at your appearance to judge your spending power and guage how much time they should invest in you, in my case, my mickey mouse t-shirt and shorts probably didn’t warrant much time if any at all.&lt;/p&gt;
+
+&lt;p&gt;They didn’t attend to me at all and when I asked them questions, they give minimal effort answers.&lt;/p&gt;
+
+&lt;p&gt;However, as always, it is better to interact with websites than people, where there is no prejudice.&lt;/p&gt;
+
+&lt;h3 id=&quot;lenskart-website&quot;&gt;Lenskart Website&lt;/h3&gt;
+
+&lt;p&gt;It was quite a pleasant site and I managed to find some frames that I liked, added to cart and reached the checkout page. Where I was asked to key in a gold membership number if I have one. I was still undecided about buying them because of the poor in-person experience. But something else drawn my attention, the checking of gold membership validity.&lt;/p&gt;
+
+&lt;h3 id=&quot;expired-gold-membership-and-bruteforcing&quot;&gt;Expired gold membership and bruteforcing&lt;/h3&gt;
+
+&lt;p&gt;Naturally, the first thing I did was to try my friend’s membership, which coincidentally had just expired to my dismay. However, I did notice that it was just a simply AJAX call to check the membership status with no rate-limiting or request token. Which meant it would be relatively trivial to brute-force a valid membership.&lt;/p&gt;
+
+&lt;p&gt;I quickly whipped up something in node. And in less than a minute, I had a few hits.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://drive.google.com/uc?id=1EqHDr8k661B9KB3x71CgrLgcT4F3hoMM&amp;amp;export=view&quot; style=&quot;max-width: 720px&quot; /&gt;
+&lt;span style=&quot;font-size: 12px&quot;&gt;Brute-forcing&lt;/span&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://drive.google.com/uc?id=10EnJ_G6zvo9HZ7-BCmOUJFw9m4J8fO1Q&amp;amp;export=view&quot; style=&quot;max-width: 720px&quot; /&gt;
+&lt;span style=&quot;font-size: 12px&quot;&gt;Found one&lt;/span&gt;&lt;/p&gt;
+
+&lt;p&gt;I prefixed the first 4 digits with my actual phone number, since phone numbers usually have shared prefixes, which increases my chances of trying an actual phone number as compared to something like 98765432, which might seem valid but might not be an actual number. This reduces the range that I have to cover.&lt;/p&gt;
+
+&lt;h3 id=&quot;password-hash&quot;&gt;Password hash&lt;/h3&gt;
+
+&lt;p&gt;After finding a hit, I was curious as to what was returned, apparently whoever made this endpoint decided it was too much effort to filter out fields, and simply returned everything from the (Mongo) DB query .&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://drive.google.com/uc?id=1FjhKT0G5BBfMmKGqPEeCW8EbfK-IYm44&amp;amp;export=view&quot; style=&quot;max-width: 720px&quot; /&gt;
+&lt;span style=&quot;font-size: 12px&quot;&gt;JSON Response&lt;/span&gt;&lt;/p&gt;
+
+&lt;p&gt;One particularly interesting field was the passwordHash, which at first glance appeared to be 32 chars, which led me to believe it is just a md5 sum of the plaintext. At this point, it could have been salted but given how lax the response was, I figured it’s probably just hashed using the plaintext.&lt;/p&gt;
+
+&lt;h3 id=&quot;rainbow-tables&quot;&gt;Rainbow tables&lt;/h3&gt;
+
+&lt;p&gt;So to confirm my suspicions, I threw the md5 into a md5 rainbow table site.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://drive.google.com/uc?id=1eeoeo19tsjk2-zHUSk-8VZOAQFyj1pcs&amp;amp;export=view&quot; style=&quot;max-width: 720px&quot; /&gt;
+&lt;span style=&quot;font-size: 12px&quot;&gt;Password: 123456&lt;/span&gt;&lt;/p&gt;
+
+&lt;p&gt;And lo and behold, it’s the md5 of a very commonly used password: &lt;strong&gt;123456&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;p&gt;However, I am not sure what this password is for. It might be a password for the shop employees to use rather than the user’s password, since I don’t really see a password based login for users.&lt;/p&gt;
+
+&lt;h3 id=&quot;personal-photos&quot;&gt;Personal photos&lt;/h3&gt;
+
+&lt;p&gt;Also from some of the JSON responses, we can see a faceAnalysis prop. I believe it’s the result of lenskart’s virtual fitting of spectacles. Based on the result, we can also get a picture of the user, which probably is against PDPA. At this point, we can get their name, number and picture.&lt;/p&gt;
+
+&lt;h3 id=&quot;gold-membership&quot;&gt;Gold membership&lt;/h3&gt;
+
+&lt;p&gt;Just to be clear, you don’t actually need the password to use someone’s lenskart gold membership and there is no login with password field. Since &lt;em&gt;it’s meant to be shared&lt;/em&gt;, all you need is the phone number of a valid gold member. There are even people on carousell selling their gold membership for &lt;a href=&quot;https://www.carousell.sg/p/lenskart-1-for-1-gold-membership-1134013424/?t-id=5W_muYuMvj_1643802401331&amp;amp;t-referrer_browse_type=search_results&amp;amp;t-referrer_request_id=mk9gsj-lh2fk4May&amp;amp;t-referrer_search_query=lenskart&amp;amp;t-referrer_sort_by=popular&amp;amp;t-tap_index=1&quot;&gt;40 cents&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;But for me it was never about the gold membership, I am more interested at what other things could be wrong about a relatively well-known shop.&lt;/p&gt;
+
+&lt;p&gt;So I poked around abit more and found something really weird.&lt;/p&gt;
+
+&lt;h4 id=&quot;what-on-earth-is-cust_is_gold&quot;&gt;What on earth is cust_is_gold&lt;/h4&gt;
+
+&lt;p&gt;I noticed the only difference between a gold member and a non-gold, was an additional cookie.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;cust_is_gold&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;Indeed, customer is always right and sometimes they are gold.&lt;/p&gt;
+
+&lt;p&gt;The logging in actually does a simple call to verify the number and subsequently sets a new cookie named “cust_is_gold” with a value of 1. This is what gets you the gold membership discount.&lt;/p&gt;
+
+&lt;p&gt;To verfiy my hypothesis, I cleared my cookies and cache, started a new cart and at the checkout page, injected my cookie.&lt;/p&gt;
+
+&lt;h4 id=&quot;before-cookie-injection&quot;&gt;Before cookie injection&lt;/h4&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://drive.google.com/uc?id=1lZh8_jm1tJUzLyt3JINB1h2tSZdkeQIi&amp;amp;export=view&quot; style=&quot;max-width: 720px&quot; /&gt;
+&lt;span style=&quot;font-size: 12px&quot;&gt;No discount, asked to log in&lt;/span&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;after-cookie-injection&quot;&gt;After cookie injection&lt;/h4&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://drive.google.com/uc?id=1UlHQ6HoDlAjVjpV6WxK7Dy7buzDv7PZQ&amp;amp;export=view&quot; style=&quot;max-width: 720px&quot; /&gt;
+&lt;span style=&quot;font-size: 12px&quot;&gt;Showing gold membership&lt;/span&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;added-another-pair-of-glasses-to-reflect-the-1-for-1&quot;&gt;Added another pair of glasses to reflect the 1-for-1&lt;/h4&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://drive.google.com/uc?id=1552mkv_xNQEhKGXAkPQd4_cXvpLca_sn&amp;amp;export=view&quot; style=&quot;max-width: 720px&quot; /&gt;
+&lt;span style=&quot;font-size: 12px&quot;&gt;1-for-1 discount&lt;/span&gt;&lt;/p&gt;
+
+&lt;p&gt;I didn’t checkout, but it seems like that’s all you really need to get 1-for-1 gold membership from Lenskart through their online sales channel.&lt;/p&gt;
+
+&lt;h3 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h3&gt;
+
+&lt;p&gt;Really interesting findings from Lenskart’s site, if anything I wasn’t that keen on buying from them but after having spent some time on their sites, I now feel like getting a pair of glasses from them.&lt;/p&gt;
+</description>
+        
+        <pubDate>Tue, 01 Feb 2022 00:00:01 +0000</pubDate>
+        <link>
+        http://0.0.0.0:4000/lenskart</link>
+        <guid isPermaLink="true">http://0.0.0.0:4000/lenskart</guid>
+      </item>
+      
+    
+      
+      <item>
+        <title>Airpods Pro Not For Me</title>
+        
+          <description>&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/wxlai90/blog/main/assets/images/uploaded/my_airpods_pro.jpg&quot; style=&quot;max-width: 720px&quot; /&gt;
+&lt;span style=&quot;font-size: 12px&quot;&gt;My AirPods Pro&lt;/span&gt;&lt;/p&gt;
+
+</description>
+        
+        <pubDate>Sun, 28 Nov 2021 00:00:00 +0000</pubDate>
+        <link>
+        http://0.0.0.0:4000/airpods-pro-not-for-me</link>
+        <guid isPermaLink="true">http://0.0.0.0:4000/airpods-pro-not-for-me</guid>
+      </item>
+      
+    
+      
+      <item>
+        <title>SGCoin - idea from a chaotic past</title>
+        
+          <description>&lt;h1 id=&quot;sgcoin&quot;&gt;SGCoin&lt;/h1&gt;
+
+</description>
+        
+        <pubDate>Sat, 13 Nov 2021 00:00:00 +0000</pubDate>
+        <link>
+        http://0.0.0.0:4000/sgcoin-idea-from-a-chaotic-past</link>
+        <guid isPermaLink="true">http://0.0.0.0:4000/sgcoin-idea-from-a-chaotic-past</guid>
+      </item>
+      
+    
+      
+      <item>
+        <title>Creating a new Github Profile Page</title>
+        
+          <description>&lt;h2 id=&quot;github-page&quot;&gt;Github page&lt;/h2&gt;
+
+&lt;p&gt;Github has a built in profile page which you can customize using markdown, and looks pretty good.&lt;/p&gt;
+
+&lt;p&gt;But like many others, this starts to feel lacking. For every github user, there is a free github pages which can be published at &lt;span&gt;username.github.io&lt;span&gt;.&lt;/span&gt;&lt;/span&gt;&lt;/p&gt;
+
+&lt;p&gt;For me, it’s at &lt;a href=&quot;https://wxlai90.github.io/&quot;&gt;wxlai90.github.io&lt;/a&gt; - wxlai90 being my username.&lt;/p&gt;
+
+&lt;p&gt;A popular use case for this free landing page is to turn it into a profile page.&lt;/p&gt;
+
+&lt;p&gt;Previously, I hosted my SG Bus Arrivals app on this, which has now been &lt;a href=&quot;https://wxlai90.github.io/bus&quot;&gt;moved&lt;/a&gt; to make space for a profile page.&lt;/p&gt;
+
+&lt;h2 id=&quot;to-spa-or-not-to-spa&quot;&gt;To SPA or not to SPA&lt;/h2&gt;
+
+&lt;p&gt;When deciding how best to build my new profile page, I decided upon a few rules to make things interesting.&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;No using of templates&lt;/li&gt;
+  &lt;li&gt;No CSS libraries like bootstrap or material&lt;/li&gt;
+  &lt;li&gt;Keep it simple and clean&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;My main motivation behind setting those rules are to force myself to practise CSS.&lt;/p&gt;
+
+&lt;p&gt;I decided to do it with plain HTML &amp;amp; CSS. After all, we should use the tools that suit our use-case, and in this case HTML + CSS fits perfectly.&lt;/p&gt;
+
+&lt;p&gt;The bulk of a profile page definitely lies in the styling, which is something I am very bad at. I cannot do art to save my life and CSS is very much an art.&lt;/p&gt;
+
+&lt;p&gt;Nevertheless, I recognize the value of styling an app and have put in the effort to improve.&lt;/p&gt;
+
+&lt;p&gt;Creating this profile page from scratch is like a small test to myself, to evaluate how much I have improved and what areas to work on more.&lt;/p&gt;
+
+&lt;h2 id=&quot;not-too-shabby&quot;&gt;Not too shabby&lt;/h2&gt;
+
+&lt;p&gt;You can check out the final result &lt;a href=&quot;https://wxlai90.github.io/&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;It was an impromptu decision to put my name next to my profile picture, and I tried to style it such that the initials of my name lines up but it looks kinda weird. I’ll leave improving in for a future iteration.&lt;/p&gt;
+
+&lt;p&gt;Overall, I am still happy with how it turned out, considering how bad I used to be at css.&lt;/p&gt;
+</description>
+        
+        <pubDate>Tue, 19 Oct 2021 13:12:00 +0000</pubDate>
+        <link>
+        http://0.0.0.0:4000/creating-a-github-profile-page</link>
+        <guid isPermaLink="true">http://0.0.0.0:4000/creating-a-github-profile-page</guid>
+      </item>
+      
+    
+      
+      <item>
+        <title>Why like that</title>
+        
+          <description>&lt;p&gt;I came across this article today while having my morning coffee about how a portion of hawkers in SG is being left behind in the digitalization race accelerated by Covid-19.&lt;/p&gt;
+
+&lt;h2 id=&quot;article&quot;&gt;Article&lt;/h2&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://www.todayonline.com/singapore/big-read-floundering-digital-wave-older-hawkers-could-call-it-quits-taking-piece-spore&quot;&gt;Today Online&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;While I have always regarded a certain level of obsolescence as a necessary evil in the transition to a more digital society. I couldn’t help but wonder if this was more evil than necessary.&lt;/p&gt;
+
+&lt;p&gt;I narrowed down the obstacles faced by the hawkers to 2 main factors:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;They are not digitally savvy enough to register for food delivery platforms like grab food, food panda, etc. Which also it tough for them to start selling online.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;The fees charged by the food delivery platforms are off-putting and makes it less worthwhile to even contemplate the idea.&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;That’s when I realized, there might be something I can do to help.&lt;/p&gt;
+
+&lt;p&gt;I have always had a similar idea for digitalizing hawkers and food centres. I had previously worked on my personal project of achieving such a platform, but stopped when I couldn’t find time.&lt;/p&gt;
+
+&lt;p&gt;I am thinking, maybe it’s time to revive the idea and write a new platform.&lt;/p&gt;
+
+&lt;p&gt;However, this would be different from the existing ones in a few ways:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;There will be no fees.&lt;/li&gt;
+  &lt;li&gt;Delivery service is provided by volunteers/ad-hoc workers.&lt;/li&gt;
+  &lt;li&gt;Option to request for volunteers to help onboard is possible.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Having no fees should not be a big problem unless it grows super fast and super big. Which would be a happy problem anyway.&lt;/p&gt;
+
+&lt;p&gt;Delivery is a brokering concept, where people can offer their service whenever they want and an asking price. It is then up to the stall owners to accept it. If they don’t feel it’s worthwhile, they will have to reject the order or figure out some other delivery fallback service.&lt;/p&gt;
+
+&lt;p&gt;An option to request for volunteers to help them onboard. There are way too many people who can easily navigate a website and register a stall. Especially younger people like teenagers, maybe I am too optimistic but I feel like all we need to do is let them know who needs help and people will help.&lt;/p&gt;
+
+&lt;p&gt;And so, I start to code my new project “Hawkers SG”.&lt;/p&gt;
+</description>
+        
+        <pubDate>Sat, 29 May 2021 13:12:00 +0000</pubDate>
+        <link>
+        http://0.0.0.0:4000/hawkers-digitalization</link>
+        <guid isPermaLink="true">http://0.0.0.0:4000/hawkers-digitalization</guid>
+      </item>
+      
+    
+  </channel>
+</rss>

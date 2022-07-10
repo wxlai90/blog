@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<channel>
+   
+      <title>jekyller.github.io/jasper/</title>
+   
+   <link>http://0.0.0.0:4000</link>
+   <description>Mostly a series of why like thats</description>
+   <language>en-uk</language>
+   <managingEditor> </managingEditor>
+   <atom:link href="rss" rel="self" type="application/rss+xml" />
+   
+	<item>
+	  <title>SGCoin - idea from a chaotic past</title>
+	  <link>/blog//sgcoin-idea-from-a-chaotic-past</link>
+	  <author></author>
+	  <pubDate>2021-11-13T00:00:00+00:00</pubDate>
+	  <guid>/blog//sgcoin-idea-from-a-chaotic-past</guid>
+	  <description><![CDATA[
+	     <h1 id="sgcoin">SGCoin</h1>
+
+<p>For on and off in the past 4-5 years, I have been thinking and tinkering with an idea.</p>
+
+<p>It is crypto related, and I call it SGCoin.</p>
+
+<p>The idea is simple, but certainly not easy to execute.</p>
+
+<p>We have a crypto coin, called SGCoin (SGDC), it is stable in nature.</p>
+
+<p>1 SGDC == 1 SGD</p>
+
+<p>To stablize it, we offer an exchange service, you can <strong>always</strong> exchange SG$1 for 1 SGDC and vice versa.</p>
+
+<p>Anyone who offers SGDC at a higher or lower rate will be arbitrage into a loss.</p>
+
+<p>We reach out to merchants and offer 0% fees in payment services. And of course, fast, 0% transfer with no boundaries.</p>
+
+<p>As we build an eco-system around this digital currency, and create utility. Users will in time, prefer having this asset in their wallets than SG Dollars, since it will be more useful and convenient.</p>
+
+<p>A few things have changed since my inception of this idea back in 2017-2018.</p>
+
+<h2 id="differences-between-now-and-then">Differences between now and then</h2>
+
+<p>Initially, SGCoin was meant to be a centralized coin.
+That way, we didn’t have to reward miners/validators for transactions. And we could get away by hosting our own nodes.</p>
+
+<p>However, these days, I gravitate towards an ERC-20 token, with a bridge to non-crypto (uninterested in crypto) users.</p>
+
+<p>The business model back then was to emulate banks and take the float and invest them in risk-free securities.</p>
+
+<p>Currently, I feel that an easier and safer way is to simply start charging merchants. But provide a service/ecosystem that is so good that it justifies the charge.</p>
+
+<h2 id="presentation-back-in-2017-2018">Presentation back in 2017-2018</h2>
+
+<p>I gave a presentation to some folks back in 2017-2018 to get some feedback, can’t remember the exact date, slides can be found at the end of the post.</p>
+
+<p>In hindsight, I was definitely talking to the wrong audience. I didn’t realize this then but some people are contented to be in a 9-5 dead end job.</p>
+
+<p>For them listening to my presentation, it was probably more of an amusement.</p>
+
+<p>A few of the comments stuck with me:</p>
+
+<ol>
+  <li>
+    <p>People don’t like digital cash, they like “real” cash.</p>
+
+    <blockquote>
+      <p>Well, pretty clear it’s the other way round.</p>
+    </blockquote>
+  </li>
+  <li>
+    <p>What happens to old people who cannot use a phone?</p>
+
+    <blockquote>
+      <p>We are not trying to boil the ocean. Do you ask Google what happens to people who cannot navigate the internet in this time and age?</p>
+    </blockquote>
+  </li>
+  <li>
+    <p>The logo is ugly, (snickers), you should not try to do this again.</p>
+  </li>
+</ol>
+
+<blockquote>
+  <p>The guy who said this is a joke. That is what is known as a placeholder, but obviously that is beyond the comprehension of his single digit IQ.</p>
+</blockquote>
+
+<h2 id="my-takeaways">My takeaways</h2>
+
+<p>Do not willy nilly talk to others about your ideas, and definitely do not take them seriously. Most people do <strong>not</strong> want to see you try - for fear that you may <strong>actually succeed</strong>.</p>
+
+<p>Of course, hindsight is 20/20. I wish I had continued the course, maybe it would have become a reality.</p>
+
+<h2 id="reflections-of-the-idea-from-my-perspective">Reflections of the idea (from my perspective)</h2>
+
+<p>Back then, lightning network was relatively new. And there was no application of it yet, now in El Salvador, we can see it working perfectly, which proves its feasibility.</p>
+
+<p>Lightning network or the idea of it, is something worth exploring. I keep thinking of offline payments, like when we use fiat notes, we don’t require network connectivity. We could do the same with crypto multi-sig channels, there is definitely some value there.</p>
+
+<h2 id="short-dbs-crypto-story">Short DBS crypto story</h2>
+
+<p>Back in 2017, I registered for DBS’s Management Associate program and got invited to their seminar(?) - where you get to talk to current MAs and they evaluate you basically. Most of the other folks I spoke to was there for the free food, just like myself.</p>
+
+<p>When one of the MAs approached my group, I decided to ask her about her thoughts on Bitcoin, and why would people still use wire transfers. She gave a bewildered look and said Bitcoin just won’t work (with no explanation of why), and promptly left to mingle with another group.</p>
+
+<p>Clearly, she had no idea what Bitcoin or crypto was.</p>
+
+<p>And this isn’t new, when I was working at a brokerage, I used to have so many heated discussions with my then AVP, whom is a nice guy but really despises and doubts crypto. I would try to convince him and dispel his doubts. But to no avail.</p>
+
+<p>Sometimes, you may think that people from finance/banking will be most equipped to handle crypto-related conversations. But the truth is, they are cemented in their archaic way of thinking, which has gotten themselves to a good position in life. And when something disruptive or innovative appears, they are perhaps too quick to dismiss it.</p>
+
+<h1 id="disclaimer">Disclaimer</h1>
+
+<p>I didn’t and still don’t have any crypto holdings. I am purely fascinated by the applications of crypto and the DeFi scene.</p>
+
+<h2 id="new-ideas">New ideas</h2>
+
+<p>I did deploy an ERC-20 contract for SGDC few months back.</p>
+
+<p>I had made several changes to my SGCoin idea, which maybe one day will be built by me.</p>
+
+<p>I will detail the new idea in the follow post in the future. Sort of like a roadmap as well.
+<a href="https://wxlai90.github.io/blog/to-be-done">Current SGCoin Idea</a></p>
+
+<h2 id="files-from-the-past">Files from the past</h2>
+
+<p><a href="https://wxlai90.github.io/blog/assets/sgcoin/slides.pdf">SGCoin slides</a></p>
+
+<p><a href="https://wxlai90.github.io/blog/assets/sgcoin/build.mp4">SGCoin build</a></p>
+
+<p><a href="https://wxlai90.github.io/blog/assets/sgcoin/mining.mp4">SGCoin Mining</a></p>
+
+	  ]]></description>
+	</item>
+
+
+</channel>
+</rss>

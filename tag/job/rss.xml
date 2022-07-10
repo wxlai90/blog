@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<channel>
+   
+      <title>jekyller.github.io/jasper/</title>
+   
+   <link>http://0.0.0.0:4000</link>
+   <description>Mostly a series of why like thats</description>
+   <language>en-uk</language>
+   <managingEditor> </managingEditor>
+   <atom:link href="rss" rel="self" type="application/rss+xml" />
+   
+	<item>
+	  <title>Creating a new Github Profile Page</title>
+	  <link>/blog//creating-a-github-profile-page</link>
+	  <author></author>
+	  <pubDate>2021-10-19T13:12:00+00:00</pubDate>
+	  <guid>/blog//creating-a-github-profile-page</guid>
+	  <description><![CDATA[
+	     <h2 id="github-page">Github page</h2>
+
+<p>Github has a built in profile page which you can customize using markdown, and looks pretty good.</p>
+
+<p>But like many others, this starts to feel lacking. For every github user, there is a free github pages which can be published at <span>username.github.io<span>.</span></span></p>
+
+<p>For me, it’s at <a href="https://wxlai90.github.io/">wxlai90.github.io</a> - wxlai90 being my username.</p>
+
+<p>A popular use case for this free landing page is to turn it into a profile page.</p>
+
+<p>Previously, I hosted my SG Bus Arrivals app on this, which has now been <a href="https://wxlai90.github.io/bus">moved</a> to make space for a profile page.</p>
+
+<h2 id="to-spa-or-not-to-spa">To SPA or not to SPA</h2>
+
+<p>When deciding how best to build my new profile page, I decided upon a few rules to make things interesting.</p>
+
+<ol>
+  <li>No using of templates</li>
+  <li>No CSS libraries like bootstrap or material</li>
+  <li>Keep it simple and clean</li>
+</ol>
+
+<p>My main motivation behind setting those rules are to force myself to practise CSS.</p>
+
+<p>I decided to do it with plain HTML &amp; CSS. After all, we should use the tools that suit our use-case, and in this case HTML + CSS fits perfectly.</p>
+
+<p>The bulk of a profile page definitely lies in the styling, which is something I am very bad at. I cannot do art to save my life and CSS is very much an art.</p>
+
+<p>Nevertheless, I recognize the value of styling an app and have put in the effort to improve.</p>
+
+<p>Creating this profile page from scratch is like a small test to myself, to evaluate how much I have improved and what areas to work on more.</p>
+
+<h2 id="not-too-shabby">Not too shabby</h2>
+
+<p>You can check out the final result <a href="https://wxlai90.github.io/">here</a>.</p>
+
+<p>It was an impromptu decision to put my name next to my profile picture, and I tried to style it such that the initials of my name lines up but it looks kinda weird. I’ll leave improving in for a future iteration.</p>
+
+<p>Overall, I am still happy with how it turned out, considering how bad I used to be at css.</p>
+
+	  ]]></description>
+	</item>
+
+
+</channel>
+</rss>
